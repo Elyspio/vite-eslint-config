@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { default: react } = require("@vitejs/plugin-react-swc");
 const { default: eslint } = require("vite-plugin-eslint");
-const { default: svgr } = require("vite-plugin-svgr");
+const svgr = require("vite-plugin-svgr");
 const tsconfig = require("./tsconfig.json");
 const { convertPathToAlias } = require("./scripts/vite/internal");
 
