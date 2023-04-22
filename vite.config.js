@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { defineConfig } = require("vite");
-const react = require("@vitejs/plugin-react-swc");
-const eslint = require("vite-plugin-eslint");
+const { default: react } = require("@vitejs/plugin-react-swc");
+const { default: eslint } = require("vite-plugin-eslint");
 
 const path = require("path");
 const tsconfig = require("./tsconfig.json");
