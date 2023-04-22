@@ -3,17 +3,18 @@ import { Octokit } from "@octokit/rest";
 import { compare, inc, parse, SemVer } from "semver";
 import path from "path";
 import * as fs from "fs/promises";
-import { execSync } from "child_process";
+
+const octokit = new Octokit({
+	auth: process.env.NODE_AUTH_TOKEN,
+});
+
+const owner = "Elyspio";
 
 async function getPackageVersion() {
-	const octokit = new Octokit({
-		auth: process.env.NODE_AUTH_TOKEN,
-	});
-
 	const response = await octokit.packages.getAllPackageVersionsForPackageOwnedByUser({
 		package_type: "npm",
 		package_name: "vite-eslint-config",
-		username: "Elyspio",
+		username: owner,
 	});
 
 	const versions = response.data;
@@ -39,16 +40,35 @@ async function writeVersionToPackageJson(version: SemVer) {
 	await fs.writeFile(packageJsonPath, raw);
 }
 
-function tagVersion(version: SemVer) {
-	execSync(`git tag ${version.raw}`);
-	execSync(`git push origin --tags`);
+const repo = "vite-eslint-config";
+
+async function tagVersion(version: SemVer) {
+	const tagName = `v${version.raw}`;
+	const commitHash = process.env.GITHUB_SHA!;
+
+	await octokit.request("POST /repos/{owner}/{repo}/git/tags", {
+		object: commitHash,
+		owner,
+		repo,
+		tag: tagName,
+		type: "commit",
+		message: "",
+	});
+
+	// Create a reference to the tag using Octokit's `createRef` method
+	await octokit.request("POST /repos/{owner}/{repo}/git/refs", {
+		owner,
+		repo,
+		ref: `refs/tags/${tagName}`,
+		sha: commitHash,
+	});
 }
 
 async function main() {
 	const latestVersion = await getPackageVersion();
 	inc(latestVersion, "minor");
 	await writeVersionToPackageJson(latestVersion);
-	tagVersion(latestVersion);
+	await tagVersion(latestVersion);
 }
 
 // eslint-disable-next-line no-void
