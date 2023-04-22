@@ -13,7 +13,7 @@ const tsconfig = require("./tsconfig.json");
  * @param {string} basePath
  * @returns
  */
-export function convertPathToAlias(paths, basePath) {
+function convertPathToAlias(paths, basePath) {
 	return Object.keys(paths)
 		.filter(p => p.endsWith("*"))
 		.reduce((acc, key) => {
@@ -27,7 +27,7 @@ export function convertPathToAlias(paths, basePath) {
  *
  * @param {string} basePath
  */
-export const getDefaultConfig = (basePath = __dirname) =>
+const getDefaultConfig = (basePath = __dirname) =>
 	defineConfig({
 		server: {
 			port: 3000,
@@ -45,3 +45,8 @@ export const getDefaultConfig = (basePath = __dirname) =>
 			}),
 		],
 	});
+
+module.exports = {
+	getDefaultConfig,
+	convertPathToAlias,
+};
