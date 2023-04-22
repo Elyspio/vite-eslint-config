@@ -1,9 +1,9 @@
 {
 	"name": "@elyspio/vite-eslint-config",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"scripts": {
-		"version": "ts-node ./scripts/version.ts"
+		"set-version": "ts-node ./scripts/version.ts"
 	},
 	"dependencies": {
 		"@types/node": "^18.15.13",
@@ -13,8 +13,8 @@
 		"@vitejs/plugin-react-swc": "^3.3.0",
 		"eslint": "8.2.0",
 		"eslint-config-airbnb": "19.0.4",
-		"eslint-config-prettier": "8.8.0",
 		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-config-prettier": "8.8.0",
 		"eslint-plugin-import": "2.25.3",
 		"eslint-plugin-jsx-a11y": "6.5.1",
 		"eslint-plugin-prettier": "^4.2.1",
@@ -26,6 +26,7 @@
 		"vite-plugin-eslint": "^1.8.1"
 	},
 	"devDependencies": {
+		"@octokit/rest": "^19.0.7",
 		"@types/semver": "^7.3.13",
 		"semver": "^7.5.0",
 		"ts-node": "^10.9.1"

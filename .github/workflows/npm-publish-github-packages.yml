@@ -3,7 +3,7 @@
 
 name: Node.js Package
 
-on: [push]
+on: [ push ]
 
 jobs:
   publish:
@@ -18,6 +18,9 @@ jobs:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
       - run: yarn --immutable
+      - run: yarn run set-version
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
