@@ -19,21 +19,16 @@ async function getPackageVersion() {
 
 	const versions = response.data;
 
-	versions.push({
-		...versions[0],
-		name: "1.0.1",
-	});
-
 	versions.sort((v1, v2) => -compare(v1.name, v2.name));
 
 	return parse(versions[0].name)!;
 }
 
-async function writeVersionToPackageJson(version: SemVer) {
+async function writeVersionToPackageJson(version: string) {
 	const packageJsonPath = path.resolve(__dirname, "..", "package.json");
 	let raw = (await fs.readFile(packageJsonPath)).toString();
 	const json = JSON.parse(raw) as { version: string };
-	json.version = version.raw;
+	json.version = version;
 
 	raw = JSON.stringify(json, null, 4).replaceAll("    ", "\t");
 
@@ -42,8 +37,8 @@ async function writeVersionToPackageJson(version: SemVer) {
 
 const repo = "vite-eslint-config";
 
-async function tagVersion(version: SemVer) {
-	const tagName = `v${version.raw}`;
+async function tagVersion(version: string) {
+	const tagName = `v${version}`;
 	const commitHash = process.env.GITHUB_SHA!;
 
 	await octokit.request("POST /repos/{owner}/{repo}/git/tags", {
@@ -65,10 +60,12 @@ async function tagVersion(version: SemVer) {
 }
 
 async function main() {
-	const latestVersion = await getPackageVersion();
-	inc(latestVersion, "minor");
-	await writeVersionToPackageJson(latestVersion);
-	await tagVersion(latestVersion);
+	const serverVersion = await getPackageVersion();
+	console.log("server version", serverVersion.raw);
+	const newVersion = inc(serverVersion, "minor")!;
+	console.log("new version", serverVersion.raw);
+	await writeVersionToPackageJson(newVersion);
+	await tagVersion(newVersion);
 }
 
 // eslint-disable-next-line no-void
