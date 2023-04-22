@@ -63,20 +63,11 @@ module.exports = {
 		"jsx-a11y/no-static-element-interactions": "off",
 		"linebreak-style": "off",
 		"max-classes-per-file": "off",
-		"max-len": [
-			"error",
-			{
-				code: 180,
-				ignoreRegExpLiterals: true,
-				ignoreStrings: true,
-				ignoreUrls: true,
-			},
-		],
 		"no-mixed-spaces-and-tabs": "off",
 		"no-shadow": "off",
 		"no-unused-vars": "off",
 		"prettier/prettier": [
-			"warn",
+			"error",
 			{
 				bracketSpacing: true,
 				endOfLine: "auto",
