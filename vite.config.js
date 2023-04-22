@@ -23,7 +23,8 @@ const getDefaultConfig = (basePath = __dirname) => ({
 			tsDecorators: true,
 		}),
 		eslint({
-			failOnWarning: false,
+			failOnWarning: true,
+			fix: true,
 		}),
 	],
 });
