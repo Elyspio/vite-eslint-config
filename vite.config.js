@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { default: react } = require("@vitejs/plugin-react-swc");
 const { default: eslint } = require("vite-plugin-eslint");
+const { default: svgr } = require("vite-plugin-svgr");
 const tsconfig = require("./tsconfig.json");
 const { convertPathToAlias } = require("./scripts/vite/internal");
 
@@ -17,6 +18,7 @@ const getDefaultConfig = (basePath = __dirname) => ({
 		alias: convertPathToAlias(tsconfig.compilerOptions.paths, basePath),
 	},
 	plugins: [
+		svgr(),
 		react({
 			tsDecorators: true,
 		}),
@@ -24,13 +26,6 @@ const getDefaultConfig = (basePath = __dirname) => ({
 			failOnWarning: false,
 		}),
 	],
-	build: {
-		rollupOptions: {
-			input: {
-				app: "./public/index.html",
-			},
-		},
-	},
 });
 
 module.exports = {

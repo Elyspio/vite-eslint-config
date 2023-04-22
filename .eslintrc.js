@@ -12,5 +12,7 @@ module.exports = {
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-explicit-any": "off",
 		"prettier/prettier": ["warn", prettierConfig],
+		"import/prefer-default-export": "off",
+		"no-void": "off"
 	},
 };
