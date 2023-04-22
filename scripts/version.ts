@@ -62,8 +62,9 @@ async function tagVersion(version: string) {
 async function main() {
 	const serverVersion = await getPackageVersion();
 	console.log("server version", serverVersion.raw);
-	const newVersion = inc(serverVersion, "minor")!;
-	console.log("new version", serverVersion.raw);
+
+	const newVersion = inc(serverVersion, "patch")!;
+	console.log("new version", newVersion);
 	await writeVersionToPackageJson(newVersion);
 	await tagVersion(newVersion);
 }
