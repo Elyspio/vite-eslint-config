@@ -25,6 +25,7 @@ const getDefaultConfig = (basePath = __dirname) => ({
 		eslint({
 			failOnWarning: true,
 			fix: true,
+			cache: false,
 		}),
 	],
 });
