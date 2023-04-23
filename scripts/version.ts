@@ -1,31 +1,36 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Octokit } from "@octokit/rest";
-import { compare, inc, parse, SemVer } from "semver";
+import { inc, parse } from "semver";
 import path from "path";
 import * as fs from "fs/promises";
+import axios from "axios";
+
+// region Config
+const owner = "Elyspio";
+const packageName = "@elyspio/vite-eslint-config";
+const repo = "vite-eslint-config";
+// endregion Config
 
 const octokit = new Octokit({
-	auth: process.env.NODE_AUTH_TOKEN,
+	auth: process.env.GITHUB_TOKEN,
 });
 
-const owner = "Elyspio";
-
+/**
+ * Get latest version of the package from npm registry
+ */
 async function getPackageVersion() {
-	const response = await octokit.packages.getAllPackageVersionsForPackageOwnedByUser({
-		package_type: "npm",
-		package_name: "vite-eslint-config",
-		username: owner,
-	});
+	const resp = await axios.get<{ version: string }>(`https://registry.npmjs.org/${packageName}/latest`);
 
-	const versions = response.data;
-
-	versions.sort((v1, v2) => -compare(v1.name, v2.name));
-
-	return parse(versions[0].name)!;
+	return parse(resp.data.version)!;
 }
 
+/**
+ * Write the new version to the package.json
+ * @param version
+ */
 async function writeVersionToPackageJson(version: string) {
-	const packageJsonPath = path.resolve(__dirname, "..", "package.json");
+	const packageJsonPath = path.resolve(__dirname, "..", "config-dist", "package.json");
+
 	let raw = (await fs.readFile(packageJsonPath)).toString();
 	const json = JSON.parse(raw) as { version: string };
 	json.version = version;
@@ -35,8 +40,10 @@ async function writeVersionToPackageJson(version: string) {
 	await fs.writeFile(packageJsonPath, raw);
 }
 
-const repo = "vite-eslint-config";
-
+/**
+ * Tag the current commit with the version
+ * @param version
+ */
 async function tagVersion(version: string) {
 	const tagName = `v${version}`;
 	const commitHash = process.env.GITHUB_SHA!;

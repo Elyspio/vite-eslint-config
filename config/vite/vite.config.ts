@@ -1,16 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const { default: react } = require("@vitejs/plugin-react-swc");
-const { default: eslint } = require("vite-plugin-eslint");
-const svgr = require("vite-plugin-svgr");
-const tsconfig = require("./tsconfig.json");
-const { convertPathToAlias } = require("./scripts/vite/internal");
+import react from "@vitejs/plugin-react-swc";
+import eslint from "vite-plugin-eslint";
+import svgr from "vite-plugin-svgr";
+// @ts-ignore
+import tsconfig from "../tsconfig.json";
+import { UserConfig } from "vite";
+import { convertPathToAlias } from "./internal.vite";
 
-/**
- *
- * @param {string} basePath
- * @return {import("vite").UserConfig}
- */
-const getDefaultConfig = (basePath = __dirname) => ({
+export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 	server: {
 		port: 3000,
 		host: "0.0.0.0",
@@ -42,7 +38,4 @@ const getDefaultConfig = (basePath = __dirname) => ({
 	},
 });
 
-module.exports = {
-	getDefaultConfig,
-	convertPathToAlias,
-};
+export * from "./internal.vite";

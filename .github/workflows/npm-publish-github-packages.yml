@@ -10,19 +10,25 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
-            packages: write
-
         steps:
             -   uses: actions/checkout@v3
+
             -   uses: actions/setup-node@v3
                 with:
                     node-version: 16
-                    registry-url: https://npm.pkg.github.com/
+                    registry-url: 'https://registry.npmjs.org'
                     cache: 'yarn'
+
             -   run: yarn --immutable
-            -   run: yarn run set-version
+
+            -   run: yarn --immutable
+                working-directory: config
+
+            -   run: yarn run pack
                 env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                    GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
             -   run: npm publish
+                working-directory: config-dist
                 env:
-                    NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+                    NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
