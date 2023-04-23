@@ -22,12 +22,7 @@ module.exports = {
 		"@typescript-eslint/no-empty-interface": "off",
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
-		"@typescript-eslint/no-shadow": [
-			"error",
-			{
-				allow: ["_"],
-			},
-		],
+		"@typescript-eslint/no-shadow": "off",
 		"@typescript-eslint/no-unused-vars": [
 			"error",
 			{
