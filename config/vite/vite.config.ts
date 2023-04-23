@@ -29,8 +29,8 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 		rollupOptions: {
 			output: {
 				manualChunks(id) {
-					if (id.includes("node_modules/@mui")) return "mui.vendor";
-					if (id.includes("node_modules/react/" || "node_modules/react-dom/")) return "react.vendor";
+					// if (id.includes("node_modules/@mui")) return "mui.vendor";
+					// if (id.includes("node_modules/react/" || "node_modules/react-dom/")) return "react.vendor";
 					if (id.includes("node_modules")) return "vendor";
 				},
 			},
