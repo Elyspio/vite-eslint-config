@@ -8,6 +8,7 @@ const { convertPathToAlias } = require("./scripts/vite/internal");
 /**
  *
  * @param {string} basePath
+ * @return {import("vite").UserConfig}
  */
 const getDefaultConfig = (basePath = __dirname) => ({
 	server: {
@@ -28,6 +29,15 @@ const getDefaultConfig = (basePath = __dirname) => ({
 			cache: false,
 		}),
 	],
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes("node_modules")) return "vendor";
+				},
+			},
+		},
+	},
 });
 
 module.exports = {

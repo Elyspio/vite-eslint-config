@@ -8,7 +8,7 @@ const path = require("path");
  */
 function convertPathToAlias(paths, basePath) {
 	return Object.keys(paths)
-		.filter(p => p.endsWith("*"))
+		.filter((p) => p.endsWith("*"))
 		.reduce((acc, key) => {
 			const p = paths[key][0];
 			acc[key.slice(0, key.length - 2)] = path.resolve(basePath, p.slice(0, p.length - 1));
