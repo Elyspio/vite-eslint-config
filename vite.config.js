@@ -33,6 +33,8 @@ const getDefaultConfig = (basePath = __dirname) => ({
 		rollupOptions: {
 			output: {
 				manualChunks(id) {
+					if (id.includes("node_modules/@mui")) return "mui.vendor";
+					if (id.includes("node_modules/react/")) return "react.vendor";
 					if (id.includes("node_modules")) return "vendor";
 				},
 			},
