@@ -39,7 +39,7 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 			{
 				ignoreStyles: [],
 				libraryName: "@mui/material",
-				libraryDirectory: "modern",
+				libraryDirectory: "",
 				libraryChangeCase: "pascalCase"
 			},
 
