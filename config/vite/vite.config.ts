@@ -33,7 +33,7 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 			{
 				ignoreStyles: [],
 				libraryName: "@mui/icons-material",
-				libraryDirectory: "esm",
+				libraryDirectory: "",
 				libraryChangeCase: "pascalCase"
 			},
 			{
