@@ -5,14 +5,19 @@ import svgr from "vite-plugin-svgr";
 import tsconfig from "../tsconfig.json";
 import { UserConfig } from "vite";
 import { convertPathToAlias } from "./internal.vite";
+import vitePluginImport from "vite-plugin-babel-import";
 
 export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
-	server: {
-		port: 3000,
-		host: "0.0.0.0",
-	},
-	resolve: {
-		alias: convertPathToAlias(tsconfig.compilerOptions.paths, basePath),
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					// if (id.includes("node_modules/@mui")) return "mui.vendor";
+					// if (id.includes("node_modules/react/" || "node_modules/react-dom/")) return "react.vendor";
+					if (id.includes("node_modules")) return "vendor";
+				},
+			},
+		},
 	},
 	plugins: [
 		svgr(),
@@ -24,17 +29,26 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 			fix: true,
 			cache: false,
 		}),
-	],
-	build: {
-		rollupOptions: {
-			output: {
-				manualChunks(id) {
-					// if (id.includes("node_modules/@mui")) return "mui.vendor";
-					// if (id.includes("node_modules/react/" || "node_modules/react-dom/")) return "react.vendor";
-					if (id.includes("node_modules")) return "vendor";
-				},
+		vitePluginImport([
+			{
+				ignoreStyles: [],
+				libraryName: "@mui/icons-material",
+				libraryDirectory: "esm",
 			},
-		},
+			{
+				ignoreStyles: [],
+				libraryName: "@mui/material",
+				libraryDirectory: "esm",
+			},
+
+		]),
+	],
+	resolve: {
+		alias: convertPathToAlias(tsconfig.compilerOptions.paths, basePath),
+	},
+	server: {
+		port: 3000,
+		host: "0.0.0.0",
 	},
 });
 
