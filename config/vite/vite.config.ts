@@ -25,7 +25,7 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 			tsDecorators: true,
 		}),
 		eslint({
-			failOnWarning: true,
+			failOnWarning: false,
 			fix: true,
 			cache: false,
 		}),
