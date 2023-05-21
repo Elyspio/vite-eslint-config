@@ -1,11 +1,11 @@
 import react from "@vitejs/plugin-react-swc";
 import eslint from "vite-plugin-eslint";
 import svgr from "vite-plugin-svgr";
-// @ts-ignore
 import tsconfig from "../tsconfig.json";
 import { UserConfig } from "vite";
 import { convertPathToAlias } from "./internal.vite";
 import vitePluginImport from "vite-plugin-babel-import";
+import checker from "vite-plugin-checker";
 
 export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 	build: {
@@ -44,6 +44,10 @@ export const getDefaultConfig = (basePath: string = __dirname): UserConfig => ({
 			},
 
 		]),
+		checker({
+			// e.g. use TypeScript check
+			typescript: true,
+		}),
 	],
 	resolve: {
 		alias: convertPathToAlias(tsconfig.compilerOptions.paths, basePath),
