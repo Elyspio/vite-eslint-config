@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { Octokit } from "@octokit/rest";
 import { inc, parse } from "semver";
-import path from "path";
+import * as path from "path";
 import * as fs from "fs/promises";
 import axios from "axios";
 
