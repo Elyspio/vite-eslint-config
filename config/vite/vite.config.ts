@@ -6,20 +6,21 @@ import { UserConfig } from "vite";
 import { convertPathToAlias } from "./internal.vite";
 import vitePluginImport from "vite-plugin-babel-import";
 import checker from "vite-plugin-checker";
+import { PluginOptions } from "vite-plugin-babel-import";
 
 
 type GetConfigParams = {
 	basePath?: string,
-	preserveImports?: boolean,
-	disableChunks?: boolean
+	disableChunks?: boolean,
+	preserveImports?: ("@mui/icons-material" | "@mui/material")[]
 }
 
 
 export const getDefaultConfig = ({ basePath, preserveImports, disableChunks }: GetConfigParams): UserConfig => {
 
-	basePath ??= __dirname,
-		preserveImports ??= false;
-	disableChunks ??= false;
+	basePath ??= __dirname;
+	preserveImports ??= [];
+	disableChunks ??= false
 
 
 	const plugins = [
@@ -35,25 +36,25 @@ export const getDefaultConfig = ({ basePath, preserveImports, disableChunks }: G
 		checker({
 			// e.g. use TypeScript check
 			typescript: true,
-			
+
 		}),
 	];
 
-	if (!preserveImports) {
+	if (preserveImports.length < 2) {
 		plugins.push(vitePluginImport([
-			{
+			!preserveImports.includes("@mui/icons-material") ? {
 				ignoreStyles: [],
 				libraryName: "@mui/icons-material",
 				libraryDirectory: "",
 				libraryChangeCase: "pascalCase"
-			},
-			{
+			} : false,
+			!preserveImports.includes("@mui/material") ? {
 				ignoreStyles: [],
 				libraryName: "@mui/material",
 				libraryDirectory: "",
 				libraryChangeCase: "pascalCase"
-			},
-		]))
+			} : false,
+		].filter(Boolean) as PluginOptions))
 	}
 
 	return ({
