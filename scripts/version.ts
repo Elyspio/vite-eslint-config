@@ -66,14 +66,19 @@ async function tagVersion(version: string) {
 	});
 }
 
-async function main() {
-	const serverVersion = await getPackageVersion();
-	console.log("server version", serverVersion.raw);
+async function main(version?: string) {
 
-	const newVersion = inc(serverVersion, "patch")!;
-	console.log("new version", newVersion);
-	await writeVersionToPackageJson(newVersion);
-	await tagVersion(newVersion);
+	if(!version) {
+		const serverVersion = await getPackageVersion();
+		console.log("server version", serverVersion.raw);
+	
+		version = inc(serverVersion, "patch")!;
+		console.log("new version", version);
+	}
+
+
+	await writeVersionToPackageJson(version);
+	await tagVersion(version);
 }
 
 // eslint-disable-next-line no-void
