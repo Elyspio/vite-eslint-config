@@ -12,11 +12,12 @@ import { PluginOptions } from "vite-plugin-babel-import";
 type GetConfigParams = {
 	basePath?: string,
 	disableChunks?: boolean,
-	preserveImports?: ("@mui/icons-material" | "@mui/material")[]
+	preserveImports?: ("@mui/icons-material" | "@mui/material")[],
+	port?: number
 }
 
 
-export const getDefaultConfig = ({ basePath, preserveImports, disableChunks }: GetConfigParams): UserConfig => {
+export const getDefaultConfig = ({ basePath, preserveImports, disableChunks, port = 3000 }: GetConfigParams): UserConfig => {
 
 	basePath ??= __dirname;
 	preserveImports ??= [];
@@ -76,7 +77,7 @@ export const getDefaultConfig = ({ basePath, preserveImports, disableChunks }: G
 			alias: convertPathToAlias(tsconfig.compilerOptions.paths, basePath),
 		},
 		server: {
-			port: 3000,
+			port: port,
 			host: "0.0.0.0",
 		},
 	});
