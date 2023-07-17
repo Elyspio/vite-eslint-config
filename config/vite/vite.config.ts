@@ -2,10 +2,10 @@ import react from "@vitejs/plugin-react-swc";
 import eslint from "vite-plugin-eslint";
 import svgr from "vite-plugin-svgr";
 import tsconfig from "../tsconfig.json";
-import { UserConfig } from "vite";
+import {PluginOption, UserConfig} from "vite";
 import { convertPathToAlias } from "./internal.vite";
 import vitePluginImport from "vite-plugin-babel-import";
-import checker from "vite-plugin-checker";
+import viteChecker from "vite-plugin-checker";
 import { PluginOptions } from "vite-plugin-babel-import";
 
 
@@ -13,11 +13,12 @@ type GetConfigParams = {
 	basePath?: string,
 	disableChunks?: boolean,
 	preserveImports?: ("@mui/icons-material" | "@mui/material")[],
-	port?: number
+	port?: number,
+	checker?: boolean
 }
 
 
-export const getDefaultConfig = ({ basePath, preserveImports, disableChunks, port = 3000 }: GetConfigParams): UserConfig => {
+export const getDefaultConfig = ({ basePath, preserveImports, disableChunks, port = 3000, checker = true }: GetConfigParams): UserConfig => {
 
 	basePath ??= __dirname;
 	preserveImports ??= [];
@@ -34,12 +35,13 @@ export const getDefaultConfig = ({ basePath, preserveImports, disableChunks, por
 			fix: true,
 			cache: false,
 		}),
-		checker({
+		(checker ?  viteChecker({
 			// e.g. use TypeScript check
 			typescript: true,
 
-		}),
-	];
+		}) : false)
+		,
+	] as PluginOption[];
 
 	if (preserveImports.length < 2) {
 		plugins.push(vitePluginImport([
